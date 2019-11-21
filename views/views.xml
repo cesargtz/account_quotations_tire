@@ -117,7 +117,7 @@
    
 
     <!-- menu -->
-    <menuitem name="Cotizaciones" id="account_quotation_tire.menu" parent="account.menu_finance_receivables"
+    <menuitem name="Cotizaciones" id="account_quotation_tire_menu" parent="account.menu_finance_receivables"
               action="accountquotation_tire_action_window" sequence="0"/>
    
 
