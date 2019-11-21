@@ -1,0 +1,139 @@
+<odoo>
+  <data>
+
+
+      <!-- Product product -->
+      <record id="product_discount_level_form_view" model="ir.ui.view">
+          <field name="name">product_discount_level.form</field>
+          <field name="model">product.product</field>
+          <field name="inherit_id" ref="product.product_normal_form_view"/>
+          <field name="arch" type="xml">
+              <field name="lst_price" position="after">
+                  <field name="qty_enable"/>
+                  <field name="for_discount"/>
+                  <field name="discount_level_1" attrs="{'invisible': [('for_discount', '=', False)]}"/>
+                  <field name="discount_level_2" attrs="{'invisible': [('for_discount', '=', False)]}"/>
+              </field>
+          </field>
+      </record>
+
+
+
+      <!-- accountquotation.line -->
+      <!-- explicit list view definition -->
+      <record model="ir.ui.view" id="account_quotation_line_list">
+      <field name="name">account_quotation_line list</field>
+      <field name="model">accountquotation.line</field>
+      <field name="arch" type="xml">
+        <tree editable="top">
+          <field name="use" invisible="1"/>
+          <field name="product"/>
+          <field name="qty"/>
+          <field name="price"/>
+          <field name="discount_price_level_2" attrs="{'invisible': [('use', 'not in', 'tires')]}"/>
+          <field name="discount_price_level_4" attrs="{'invisible': [('use', 'not in', 'tires')]}"/>
+        </tree>
+      </field>
+    </record>
+
+
+  <!-- accountquotation.tire -->
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="account_quotation_tire_list">
+      <field name="name">account_quotation_tire list</field>
+      <field name="model">accountquotation.tire</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name" string="Folio"/>
+          <field name="partner"/>
+          <field name="date"/>
+          <field name="state"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- sequence -->
+    <record id="seq_type_quotation" model="ir.sequence">
+      <field name="name">quotation sequence</field>
+      <field name="code">reg_code_account_quotation_set</field>
+    </record>
+    <record id="seq_account_quotation" model="ir.sequence">
+        <field name="name">reg quotation sequence</field>
+        <field name="code">reg_code_account_quotation</field>
+        <field name="prefix">C</field>
+        <field name="padding">2</field>
+        <field name="implementation">no_gap</field>
+    </record>
+   
+   <!-- Form -->
+   <record model="ir.ui.view" id="ticket_relation_form_view">
+      <field name="name">account_quotation_tire form</field>
+      <field name="model">accountquotation.tire</field>
+      <field name="arch" type="xml">
+        <form> 
+         <header>
+                    <button name="quotation_confirm" type="object" string="Confirmar" states="draft" class="oe_highlight"/>
+                    <button name="quotation_make_invoice" type="object" string="Crear Factura" states="confirm" class="oe_highlight"/>
+                    <button name="quotation_cancel" type="object" string="Cancelar" states="confirm" class="oe_highlight"/>
+                    <button name="quotation_change_draft" type="object" string="Cambiar a borrador" states="cancel" class="oe_highlight"/>
+
+                    <!--     <button name="weight_output" type="object" string="Peso Salida" states="weight_output" class="oe_highlight"/>
+                        <button name="fun_transfer" type="object" string="Transfer" class="oe_highlight"
+                            	groups="truck_reception.group_truck_transfer" attrs="{'invisible': ['|', ('contract_state', 'in', ['except_picking']), '|', ('state', 'not in', ['done']), ('stock_picking_id', '!=', False)]}"/> -->
+                        <field name="state" widget="statusbar" readonly="1"  nolabel="1" statusbar_visible="draft,confirm"/>
+                    </header>
+          <sheet>
+             <!-- <div class="oe_title">
+                <h1>
+                    <label string="Folio"/>
+                    <field name="name" class="oe_inline" readonly="1"/>
+                </h1>
+             </div> -->
+            <group col="4">
+              <field name="partner" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
+              <field name="date" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
+              <field name="use" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
+              <field name="invoice_create_id"  readonly="1" string="Factura Relacionada"/>
+            </group>
+              <notebook> 
+                  <page string="lineas de cotizacion">
+                      <field name="quotation_line" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
+                  </page>
+                  <page string="Productos">
+                      <field name="products" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
+                  </page>
+              </notebook>
+          </sheet>
+        </form>
+    </field>
+  </record>
+    <!-- actions opening views on models -->    
+    <record model="ir.actions.act_window" id="accountquotation_tire_action_window">
+      <field name="name">Cotizaciones</field>
+      <field name="res_model">accountquotation.tire</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+   
+
+    <!-- menu -->
+    <menuitem name="Cotizaciones" id="account_quotation_tire.menu" parent="account.menu_finance_receivables"
+              action="accountquotation_tire_action_window" sequence="0"/>
+   
+
+
+  <!-- account invoice -->
+  	<record model="ir.ui.view" id="view_account_invoice_taxes_quotation_form">
+		<field name="name">account.invoice.taxes.quotation</field>
+		<field name="model">account.invoice</field>
+		<field name="inherit_id" ref="account.invoice_form"/>
+		<field name="arch" type="xml">	
+        <field name="user_id" position="after">
+          <field name="taxes_compute" string="Impuestos" attrs="{'invisible': [('state', 'not in', 'draft')]}"/>
+        </field>
+  	</field>
+	</record>
+
+
+  </data>
+</odoo>

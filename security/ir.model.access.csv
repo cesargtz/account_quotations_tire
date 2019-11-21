@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_accountquotation_line,name_accountquotation_line,model_accountquotation_line,,1,1,1,1
+access_accountquotation_tire,name_accountquotation_tire,model_accountquotation_tire,,1,1,1,1
