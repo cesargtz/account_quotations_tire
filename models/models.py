@@ -157,7 +157,7 @@ class AccountQuotationInvoice(models.Model):
         for line in self.invoice_line_ids:
             line.invoice_line_tax_ids = line.product_id.taxes_id.ids
 
-    @api.model
+    @api.multi
     def action_invoice_open(self):
         res = super(AccountQuotationInvoice,self).action_invoice_open()
         if self.type in ('out_invoice','in_refund'):
@@ -170,7 +170,7 @@ class AccountQuotationInvoice(models.Model):
                     line.product_id.write({'qty_enable': ( line.product_id.qty_enable + line.quantity)})
         return res
 
-    @api.model
+    @api.multi
     def action_invoice_cancel(self):
         res = super(AccountQuotationInvoice,self). action_invoice_cancel()
         if self.type in ('out_invoice','in_refund'):
