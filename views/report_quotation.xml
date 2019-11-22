@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+  <report 
+    id="accountquotarion_report" 
+    model="accountquotation.tire" 
+    string="Cotización" 
+    report_type="qweb-pdf" 
+    name="account_quotation_tire.report_quotation_view" 
+    file="account_quotation_tire.report_quotation" />
+
+
+    <template id="report_quotation_view">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h1>Cotización <span style="font-size:38px" t-field="o.name"></span></h1>
+                        <div>
+                            <h5 style="display:inline; float:left;width:650px"  t-field="o.partner.name"></h5>
+                            <p tyle="display:inlinel float:rigt"  class="lead" t-field="o.date"></p>
+                        </div>
+                       
+
+                        <table class="table table-conden">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Producto</th>
+                                    <t t-if="o.use == 'service'">
+                                        <th>Cantidad</th>
+                                    </t>
+                                    <th>Precio</th>
+                                     <t t-if="o.use == 'tires'">
+                                        <th>Precio con 2</th>
+                                        <th>Precio con 4</th>
+                                     </t>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="total" t-value="0"></t>
+                                <t t-foreach="o.quotation_line" t-as="line">
+                                    <tr>
+                                        <td>
+                                            <img t-if="line.product.image_small" t-att-src="image_data_uri(line.product.image_small)" alt="Logo" role="img"  style="height: 100px;width: 100px;"/>
+                                            <!-- <img t-if="line.product.image" t-att-src="'data:image/jpg;base64,%s' % (line.product.image_variant,)" style="max-height:45pt;max-width:90%"/> -->
+                                        </td>
+                                        <td>
+                                            <p style="font-size:14px" t-field="line.product.name"></p>
+                                        </td>
+                                        <t t-if="o.use == 'service'">
+                                            <td>
+                                                <p style="font-size:14px" t-field="line.qty">></p>
+                                            </td>
+                                        </t>
+                                        <td>
+                                           <p>$<span style="font-size:14px" t-field="line.price" t-field-options='{"widget": "monetary", "display_currency": "currency"}'></span></p>
+                                            <t t-if="o.use == 'service'">
+                                                 <t t-set="total" t-value="total + (line.price * line.qty)"/>
+                                            </t>
+                                        </td>
+                                        <t t-if="o.use == 'tires'">
+                                            <td>
+                                             <p>$<span style="font-size:14px" t-field="line.discount_price_level_2" t-field-options='{"widget": "monetary", "display_currency": "currency"}'></span></p>
+                                            </td>
+                                            <td>
+                                             <p>$<span style="font-size:14px" t-field="line.discount_price_level_4" t-field-options='{"widget": "monetary", "display_currency": "currency"}'></span></p>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </t>
+                                <t t-if="o.use == 'service'">
+                                    <tr>
+                                        <td colspan="3" class="text-right">
+                                            <p style="font-size:30px">Total: $<span t-esc="total" t-esc-options='{"widget": "monetary", "display_currency": "line.product.currency_id"}'></span></p>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+  </odoo>
