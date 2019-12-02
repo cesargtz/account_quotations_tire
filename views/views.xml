@@ -116,9 +116,40 @@
     </record>
    
 
+  <!-- Wizard View -->
+      <record model="ir.ui.view" id="wizard_quotation_view">
+      <field name="name">wizard.quotation</field>
+      <field name="model">accountquotation.wizard</field>
+      <field name="arch" type="xml">
+        <form string="Cotizar">
+            <group>
+                <field name="catg_ids" strin="Categoría"/>
+            </group>
+          <footer>
+            <!-- <button name="button_save" string="Save" type="object" class="oe_highlight"/> -->
+            <button name="check_report" string="Generar" type="object" class="oe_highlight"/>
+            or
+            <button special="cancel" string="Cancel" class="oe_link" default_focus="0"/>
+          </footer>
+        </form>
+      </field>
+    </record>
+
+   <!-- wizard  action-->
+    <record id="action_open_wizard_quotation" model="ir.actions.act_window">
+        <field name="name">Abrir Cotizador</field>
+        <field name="res_model">accountquotation.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
     <!-- menu -->
-    <menuitem name="Cotizaciones" id="account_quotation_tire_menu" parent="account.menu_finance_receivables"
+    <menuitem name="Cotizaciones Rapida" id="account_quotation_wizard_menu" parent="account.menu_finance_receivables"
+          action="action_open_wizard_quotation" sequence="0"/>
+    <menuitem name="Cotizacion Formal" id="account_quotation_tire_menu" parent="account.menu_finance_receivables"
               action="accountquotation_tire_action_window" sequence="0"/>
+
    
 
 

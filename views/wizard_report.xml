@@ -1,0 +1,67 @@
+<odoo>
+
+ <report
+        id="report_quotation"
+        model="report.accountquotation.wizard"
+        string="Cotizacion de llantas"
+        report_type="qweb-pdf"
+        name="account_quotation_tire.report_quo_wiz"
+        menu="False"/>
+
+        <template id="report_quo_wiz">
+        <t t-call="web.html_container">
+            <!-- <t t-foreach="docs" t-as="o"> -->
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <!-- <h1>Cotización <span style="font-size:38px" t-field="o.name"></span></h1> -->
+                        <!-- <div>
+                            <h5 style="display:inline; float:left;width:650px"  t-field="o.partner.name"></h5>
+                            <p tyle="display:inlinel float:rigt"  class="lead" t-field="o.date"></p>
+                        </div> -->
+                       
+
+                        <table class="table table-conden">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Producto</th>
+                                    <th>Precio</th>
+                                    <th>Precio con 2</th>
+                                    <th>Precio con 4</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="docs" t-as="line">
+                                    <t t-set="d_2" t-value="0"></t>
+                                    <t t-set="d_4" t-value="0"></t>
+                                    <tr>
+                                        <td>
+                                            <img t-if="line.image_small" t-att-src="image_data_uri(line.image_small)" alt="Logo" role="img"  style="height: 35px;width: 35px;"/>
+                                        </td>
+                                        <td>
+                                            <p style="font-size:14px" t-field="line.name"></p>
+                                        </td>
+                                        <td>
+                                           <p>$<span style="font-size:14px" t-field="line.list_price" t-field-options='{"widget": "monetary", "display_currency": "currency"}'></span></p>
+                                        </td>
+                                        <td>
+                                            <t t-set="d_2" t-value="line.list_price - (line.list_price * (line.discount_level_1/100))"/>
+                                            <p>$<span style="font-size:14px" t-esc="d_2" t-esc-options='{"widget": "monetary", "display_currency": "line.currency_id"}'></span></p>
+                                        </td>
+                                        <td>
+                                            <t t-set="d_4" t-value="line.list_price - (line.list_price * (line.discount_level_2/100))"/>
+                                            <p>$<span style="font-size:14px" t-esc="d_4" t-esc-options='{"widget": "monetary", "display_currency": "line.currency_id"}'></span></p>
+                                        </td> 
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            <!-- </t> -->
+        </t>
+    </template>
+
+
+
+</odoo>

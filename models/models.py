@@ -182,3 +182,40 @@ class AccountQuotationInvoice(models.Model):
                 if line.product_id.type == 'consu':
                     line.product_id.write({'qty_enable': ( line.product_id.qty_enable - line.quantity)})
         return res
+
+class AccountQuotationWizard(models.TransientModel):
+    _name = 'accountquotation.wizard'
+
+    catg_ids = fields.Many2one('product.category', string="Categoría", required=True)
+
+
+    @api.multi
+    def check_report(self):
+        data = {
+            'ids': self.ids,
+            'model': self._name,
+            'form': {
+                'catg_ids': self.catg_ids.id,
+            },
+        }
+        # use `module_name.report_id` as reference.
+        # `report_action()` will call `_get_report_values()` and pass `data` automatically.
+        return self.env.ref('account_quotation_tire.report_quotation').report_action(self, data=data)
+
+class ReportLocationCalculate(models.AbstractModel):
+    _name = 'report.account_quotation_tire.report_quo_wiz'
+
+    @api.model
+    def _get_report_values(self, docids, data=None):
+        categ_id = data['form']['catg_ids']
+        print(categ_id)
+        products = self.env['product.product'].search([('categ_id','=',categ_id)])
+        products_list = []
+        for product in products:
+           products_list.append(product)
+        print(products_list)
+        return {
+            'doc_ids': data['ids'],
+            'doc_model': data['model'],
+            'docs': products_list,
+        }
