@@ -13,74 +13,126 @@
     file="account_quotations_tire.report_quotation"  -->
 
     <template id="report_quotation_view">
-        <t t-call="web.html_container">
+          <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
                 <t t-call="web.external_layout">
                     <div class="page">
-                        <h1 style="font-size:26px">Cotización <span style="font-size:28px" t-field="o.name"></span></h1>
-                        <div>
-                            <h5 style="display:inline; float:left;width:650px"  t-field="o.partner.name"></h5>
-                            <p tyle="display:inlinel float:rigt"  class="lead" t-field="o.date"></p>
+                        <div class="row">
+                            <div style="width: 100%;">
+                                <h1 style="width:40%; text-align:center; height: 30px; padding-bottom:3px; font-size:25px; margin:0;margin:0 0 10px 0; font-weight: bold; color:white; background:#5A8AB2;">Cliente</h1>
+                                <div style="padding:5px;width:40%;  line-height: 1.2; float:left">
+                                    <p style="margin:0px; padding:0px">
+                                        <span style="text-transform: uppercase; font-size:14px; margin:0;" t-field="o.partner.name"/>
+                                    </p>
+                                    <p style="text-transform: uppercase; margin:5px 0 0 0; padding:0px; font-size:12px;">
+                                        <span style="text-transform: uppercase; margin:0;" t-field="o.partner.street"/>
+                                        <span style="margin:0px; padding:0px">, </span>
+                                        <span style="text-transform: uppercase; margin:0;" t-field="o.partner.street2"/>
+                                    </p>
+                                    <span t-field="o.partner.city" style="text-transform: uppercase; margin:0; font-size:12px;"></span>
+                                    <span t-field="o.partner.state_id.name" style="text-transform: uppercase; margin:0; font-size:12px;"></span>
+                                    <p style="margin:0;"><span style="text-transform: uppercase; font-size:12px; margin:0;" t-field="o.partner.vat"/></p>
+                                </div>
+                                <!--  -->
+                                 <div style="margin:-40px 0 0 0; width:40%; line-height: 1.2; float:right">
+                                    <p style="width:100%; height: 30px; text-align:left; padding-bottom:3px; font-size:25px; margin:0;margin:0 0 12px 0; font-weight: bold; color:#353940; ">Multillantas Hernandez</p>
+                                    <!-- <p style="width:100%;text-align:center; height: 30px; padding-bottom:3px; font-size:20px; margin:0;margin:0 0 10px 0; font-weight: bold; color:black; ">Cotizado al : <span t-field="o.date"/></p> -->
+                                    <p style="margin:0;"><span style="text-transform: uppercase; font-size:12px; margin:0;">RFC: OIJS640711CH7</span></p>
+                                    <p style="margin:0px; padding:0px">
+                                        <!-- <span style="text-transform: uppercase; font-size:14px; margin:0;">MARIA DEL SOCORRO OLIVAS JAQUEZ</span> -->
+                                         <span style="text-transform: uppercase; font-size:14px; margin:0;">Fecha: </span>
+                                        <span style="text-transform: uppercase; font-size:14px; margin:0;"  t-field="o.date"></span>
+                                    </p>
+                                    <p style="text-transform: uppercase; margin:0 0 0 0; padding:0px; font-size:12px;">
+                                        <span style="text-transform: uppercase; margin:0;">VIGENCIA: </span>
+                                        <span style="text-transform: uppercase; margin:0;" t-field="o.due_date"></span>
+                                    </p>
+                                    <span style="text-transform: uppercase; margin:0; font-size:12px;">VENDEDOR:</span>
+                                    <span t-field="o.user.name" style="text-transform: uppercase; margin:0; font-size:12px;"></span>
+                                </div>
+                                <!--  -->
+                                <!-- <p style="margin:0px;"><span style="margin:0;" t-field="o.date"/></p> -->
+                            </div>
                         </div>
-                       
 
-                        <table class="table table-conden">
+                       
+                        <table class="table table-conden" style="margin:25px 0 0 0">
                             <thead>
                                 <tr>
-                                    <th></th>
+                                    <th/>
                                     <th>Producto</th>
-                                    <t t-if="o.use == 'service'">
-                                        <th>Cantidad</th>
+                                    <th>Descripción</th>
+                                    <th>Cantidad</th>
+                                     <t t-if="not o.is_credit">
+                                         <th>Precio</th>
                                     </t>
-                                    <th>Precio</th>
-                                     <t t-if="o.use == 'tires'">
-                                        <th>Precio con 2</th>
-                                        <th>Precio con 4</th>
-                                     </t>
+                                    <t t-if="o.is_credit">
+                                        <th>Precio a crédito</th>
+                                        <th>Precio pago mes</th>
+                                    </t>
+                                   
+                                    <th>Total</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <t t-set="total" t-value="0"></t>
+                                <t t-set="total" t-value="0"/>
                                 <t t-foreach="o.quotation_line" t-as="line">
+                                  
                                     <tr>
                                         <td>
-                                            <img t-if="line.product.image_small" t-att-src="image_data_uri(line.product.image_small)" alt="Logo" role="img"  style="height: 35px;width: 35px;"/>
+                                            <img t-if="line.product.image_small" t-att-src="image_data_uri(line.product.image_small)" alt="Logo" role="img" style="height: 35px;width: 35px;"/>
                                             <!-- <img t-if="line.product.image" t-att-src="'data:image/jpg;base64,%s' % (line.product.image_variant,)" style="max-height:45pt;max-width:90%"/> -->
                                         </td>
                                         <td>
-                                            <p style="font-size:14px" t-field="line.product.name"></p>
+                                            <p style="font-size:16px" t-field="line.product.name"/>
                                         </td>
-                                        <t t-if="o.use == 'service'">
+                                         <td>
+                                            <p style="font-size:16px" t-field="line.description"/>
+                                        </td>
+                                       
                                             <td>
-                                                <p style="font-size:14px" t-field="line.qty">></p>
+                                                <p style="font-size:16px" t-field="line.qty"></p>
+                                            </td>
+                                        <td>
+                                           <p>$<span style="font-size:16px" t-field="line.price" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;currency&quot;}"/></p>
+                                           <t t-set="total" t-value="total + (line.price * line.qty)"/>
+                                        </td>
+                                        <t t-if="o.is_credit">
+                                            <td>
+                                                <p>$<span style="font-size:16px" t-field="line.product.lst_price" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;currency&quot;}"/></p>
                                             </td>
                                         </t>
                                         <td>
-                                           <p>$<span style="font-size:14px" t-field="line.price" t-field-options='{"widget": "monetary", "display_currency": "currency"}'></span></p>
-                                            <t t-if="o.use == 'service'">
-                                                 <t t-set="total" t-value="total + (line.price * line.qty)"/>
-                                            </t>
+                                          <t t-set="line_total" t-value="line.price * line.qty"/>
+                                          <p style="font-size:16px"><span t-esc="line_total" t-esc-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;line.product.currency_id&quot;}"/></p>
                                         </td>
-                                        <t t-if="o.use == 'tires'">
-                                            <td>
-                                             <p>$<span style="font-size:14px" t-field="line.discount_price_level_2" t-field-options='{"widget": "monetary", "display_currency": "currency"}'></span></p>
-                                            </td>
-                                            <td>
-                                             <p>$<span style="font-size:14px" t-field="line.discount_price_level_4" t-field-options='{"widget": "monetary", "display_currency": "currency"}'></span></p>
-                                            </td>
-                                        </t>
                                     </tr>
                                 </t>
-                                <t t-if="o.use == 'service'">
                                     <tr>
-                                        <td colspan="3" class="text-right">
-                                            <p style="font-size:30px">Total: $<span t-esc="total" t-esc-options='{"widget": "monetary", "display_currency": "line.product.currency_id"}'></span></p>
+                                     <t t-if="not o.is_credit">
+                                       <td colspan="5" class="text-right">
+                                            <p style="font-size:22px; margin:35px 0 0 0;">Total: $<strong t-esc="total" t-esc-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;line.product.currency_id&quot;}"/></p>
+                                            <p><span style="font-size:15px">Precios incluyen IVA</span></p>
+                                        </td>
+                                     </t>
+                                      <t t-if="o.is_credit">
+                                        <td colspan="6" class="text-right">
+                                            <p style="font-size:22px; margin:35px 0 0 0;">Total: $<strong t-esc="total" t-esc-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;line.product.currency_id&quot;}"/></p>
+                                            <p><span style="font-size:15px">Precios incluyen IVA</span></p>
+                                        </td>
+                                      </t>
+                                    </tr>
+                                     <tr style="border: none;">
+                                        <td colspan="5" class="text-center" style="border: none;">
+                                            <p style="margin:80px 0px 0px 0px;"><span style="font-size:25px;">¡Gracias por su Preferencia!</span></p>
+                                            <p style="margin:0"><span style="font-size:16px;">multillantashernandez8@gmail.com</span></p>
+                                            <p style="margin:0"><span style="font-size:16px;">6251085882</span></p>
                                         </td>
                                     </tr>
-                                </t>
                             </tbody>
                         </table>
-                    </div>
+                            
+                     </div>
                 </t>
             </t>
         </t>

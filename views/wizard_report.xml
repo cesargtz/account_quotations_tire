@@ -18,9 +18,10 @@
                             <h5 style="display:inline; float:left;width:650px"  t-field="o.partner.name"></h5>
                             <p tyle="display:inlinel float:rigt"  class="lead" t-field="o.date"></p>
                         </div> -->
-                       
+                       <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>   
+                       <p style="margin-botton:20px;"></p>
 
-                        <table class="table table-conden">
+                        <table class="table table-conden" >
                             <thead>
                                 <tr>
                                     <th></th>
@@ -32,30 +33,39 @@
                             </thead>
                             <tbody>
                                 <t t-foreach="docs" t-as="line">
-                                    <t t-set="d_2" t-value="0"></t>
-                                    <t t-set="d_4" t-value="0"></t>
-                                    <tr>
-                                        <td>
-                                            <img t-if="line.image_small" t-att-src="image_data_uri(line.image_small)" alt="Logo" role="img"  style="height: 35px;width: 35px;"/>
-                                        </td>
-                                        <td>
-                                            <p style="font-size:14px" t-field="line.name"></p>
-                                        </td>
-                                        <td>
-                                           <p>$<span style="font-size:14px" t-field="line.list_price" t-field-options='{"widget": "monetary", "display_currency": "currency"}'></span></p>
-                                        </td>
-                                        <td>
-                                            <t t-set="d_2" t-value="line.list_price - (line.list_price * (line.discount_level_1/100))"/>
-                                            <p>$<span style="font-size:14px" t-esc="d_2" t-esc-options='{"widget": "monetary", "display_currency": "line.currency_id"}'></span></p>
-                                        </td>
-                                        <td>
-                                            <t t-set="d_4" t-value="line.list_price - (line.list_price * (line.discount_level_2/100))"/>
-                                            <p>$<span style="font-size:14px" t-esc="d_4" t-esc-options='{"widget": "monetary", "display_currency": "line.currency_id"}'></span></p>
-                                        </td> 
-                                    </tr>
+                                    <t t-if="line.qty_enable > 0">
+                                        <t t-set="d_2" t-value="0"></t>
+                                        <t t-set="d_4" t-value="0"></t>
+                                        <tr>
+                                            <td>
+                                                <img t-if="line.image_small" t-att-src="image_data_uri(line.image_small)" alt="Logo" role="img"  style="height: 65px;width: 65px;"/>
+                                            </td>
+                                            <td>
+                                                <p style="font-size:14px" t-field="line.name"></p>
+                                            </td>
+                                            <td>
+                                            <p>$<span style="font-size:14px" t-field="line.list_price" t-field-options='{"widget": "monetary", "display_currency": "currency"}'></span></p>
+                                            </td>
+                                            <td>
+                                                <t t-set="d_2" t-value="line.list_price - (line.list_price * (line.discount_level_1/100))"/>
+                                                <p>$<span style="font-size:14px" t-esc="d_2" t-esc-options='{"widget": "monetary", "display_currency": "line.currency_id"}'></span></p>
+                                            </td>
+                                            <td>
+                                                <t t-set="d_4" t-value="line.list_price - (line.list_price * (line.discount_level_2/100))"/>
+                                                <p>$<span style="font-size:14px" t-esc="d_4" t-esc-options='{"widget": "monetary", "display_currency": "line.currency_id"}'></span></p>
+                                            </td> 
+                                        </tr>
+                                    </t>
                                 </t>
+                                   <tr style="border: none;">
+                                        <td colspan="5" class="text-center" style="border: none;">
+                                             <p class="text-center" style="margin:100px 0px 0px 0px;"><strong style="font-size:20px;">Montaje, balanceo y pivote gratis</strong></p>
+                                        </td>
+                                    </tr>
                             </tbody>
                         </table>
+                    </div>
+                    <div class="row">
                     </div>
                 </t>
             <!-- </t> -->

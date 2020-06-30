@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+     <record model="report.paperformat" id="paperformat_order_service_report">
+        <field name="name">paperformat.order.service.report</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_width">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">30</field>
+        <field name="margin_right">5</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">20</field>
+        <field name="dpi">90</field>
+    </record>
+
+  <report 
+    id="service_report_report" 
+    model="service.order" 
+    string="Orden de servicio" 
+    report_type="qweb-pdf" 
+    name="account_quotation_tire.report_service_view" 
+    file="account_quotation_tire.report_service"
+    paperformat="paperformat_order_service_report"/>
+
+    <template id="report_service_view">
+          <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="header" style="border-bottom: 2px solid black;">
+                    <h3 class="text-center">Orden de Servicio</h3>
+                </div>
+                    <div class="article">
+                        <div style="margin:0px">
+                            <div style="width: 100%;">
+                                <h1 style="width:40%; text-align:center; height: 30px; padding-bottom:3px; font-size:25px; margin:0;margin:0 0 10px 0; font-weight: bold; color:white; background:#5A8AB2;">Cliente</h1>
+                                <div style="padding:5px;width:40%;  line-height: 1.2; float:left">
+                                    <p style="margin-bottom:8px; padding:0px">
+                                        <span style="font-size:16x; margin:0; font-weight: 800;" t-field="o.owner.name"/>
+                                    </p>
+                                     <p style="margin-bottom:8px; padding:0px">
+                                        <span style="font-size:16x; margin:0;" t-field="o.phone_owner"/>
+                                    </p>
+                                     <p style="margin-bottom:8px; padding:0px">
+                                        <span style="font-size:16x; margin:0; font-weight: 800;" t-field="o.brand"/>,
+                                        <span style="font-size:16x; margin:0; font-weight: 800;" t-field="o.model"/>,
+                                        <span style="font-size:16x; margin:0; font-weight: 800;" t-field="o.year"/>.
+                                        <t t-if="o.forxfor">
+                                           <span style="font-size:16x; margin:0;  font-weight: 800;">4X4</span>
+                                        </t>
+                                    </p>
+                                     <p style="margin-bottom:8px; padding:0px">
+                                        Motor: <span style="font-size:16x; margin:0;" t-field="o.motor"/>, 
+                                        kilómetros: <span style="font-size:16x; margin:0;" t-field="o.km"/>.
+                                    </p>
+                                </div>
+                                <!--  -->
+                                 <div style="margin:-40px 0 0 0; width:40%; line-height: 1.2; float:right">
+                                    <p style="width:100%; height: 30px; text-align:left; padding-bottom:3px; font-size:25px; margin:0;margin:0 0 12px 0; font-weight: bold; color:#353940; ">Multillantas Hernandez</p>
+                                     <p style="margin-bottom:8px; padding:0px">
+                                         <span style="font-size:16x; margin:0;">Fecha: </span>
+                                         <span style="font-size:16x; margin:0;"  t-field="o.date"></span><br/>
+                                    </p>
+                                    <p style="margin-bottom:5px; font-size:16x;">Folio: <span style="font-size:16x; margin:0;" t-field="o.name"/></p>
+                                    <span style="margin:0; font-size:16x;">Asignado a:</span>
+                                    <span t-field="o.assigned_to" style="margin:0; font-size:14x; font-weight: 800;"></span>
+                                </div>
+                                <!--  -->
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div style="width: 100%; margin-top:20px">
+                                <span style="color:black;  font-size:16px; margin:0px; font-weight: 800; border-bottom: 1px solid #ccc; width:150px;">Trabajo a realizar:</span>
+                                <!-- <hr style="display: block; border:0; border-bottom: 1px solid #ccc;  margin: 5px 0; padding:0; width:30%;"/> -->
+                                <p style="margin-top:10px;">                                        
+                                    <span style="font-size:16px;"  
+                                            t-field="o.work_to_do">
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+
+        
+                        <table class="table table-conden" style="margin:35px 0 0 0">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Descripción</th>
+                                    <th>Cantidad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="total" t-value="0"/>
+                                <t t-foreach="o.service_order_line" t-as="line">
+                                  
+                                    <tr>
+                                        <td>
+                                            <p style="font-size:16px" t-field="line.product_id.name"/>
+                                        </td>
+                                        <td>
+                                            <p style="font-size:16px" t-field="line.description"></p>
+                                        </td>
+                                         <td>
+                                            <p style="font-size:16px" t-field="line.qty"></p>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                     </div>
+                    <div class="footer" style="width:100%">
+                        <div class="row text-center" style="border-top: 1px solid black; width:100%">
+                            <div class="text-center" style="width:100%; margin-top:5px;">
+                                <p class="text-center">Multillantas Hernandez</p>
+                            </div>
+                        </div>
+                    </div>
+                <!-- </t> -->
+            </t>
+        </t>
+    </template>
+
+  </odoo>

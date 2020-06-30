@@ -1,0 +1,15 @@
+<odoo>
+	<data>
+
+        <record id="commision_categ_form_view" model="ir.ui.view">
+        <field name="name">comission_categ.form</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+            <field name="parent_id" position="after">
+                <field name="interests"/>
+            </field>
+        </field>
+        </record>
+    </data>
+</odoo>
