@@ -2,56 +2,48 @@
 	<data>
 
 
-			<!-- Product product -->
-			<record id="product_discount_level_form_view" model="ir.ui.view">
-					<field name="name">product_discount_level.form</field>
-					<field name="model">product.product</field>
-					<field name="inherit_id" ref="product.product_normal_form_view"/>
-					<field name="arch" type="xml">
-							<field name="lst_price" position="after">
-									<field name="qty_enable"/>
-									<field name="for_discount"/>
-									<field name="discount_level_1" attrs="{'invisible': [('for_discount', '=', False)]}"/>
-									<field name="discount_level_2" attrs="{'invisible': [('for_discount', '=', False)]}"/>
-									<!-- <field name="stock" string="De stock"/> -->
-							</field>
-					</field>
-			</record>
+		<!-- Product product -->
+		<record id="product_discount_level_form_view" model="ir.ui.view">
+			<field name="name">product_discount_level.form</field>
+			<field name="model">product.product</field>
+			<field name="inherit_id" ref="product.product_normal_form_view" />
+			<field name="arch" type="xml">
+				<field name="lst_price" position="after">
+					<field name="qty_enable" />
+					<field name="for_discount" />
+					<field name="discount_level_1" attrs="{'invisible': [('for_discount', '=', False)]}" />
+					<field name="discount_level_2" attrs="{'invisible': [('for_discount', '=', False)]}" />
+				</field>
+			</field>
+		</record>
 
-
-
-			<!-- accountquotation.line -->
-			<!-- explicit list view definition -->
-			<record model="ir.ui.view" id="account_quotation_line_list">
+		<!-- accountquotation.line -->
+		<!-- explicit list view definition -->
+		<record model="ir.ui.view" id="account_quotation_line_list">
 			<field name="name">account_quotation_line list</field>
 			<field name="model">accountquotation.line</field>
 			<field name="arch" type="xml">
 				<tree editable="top">
-					<field name="use" invisible="1"/>
-					<field name="product"/>
-					<field name="description"/>
-					<field name="qty"/>
-					<field name="price"/>
-					<!-- <field name="comission" attrs="{'invisible': [('quotation.is_credit','!=', False)]}"/> -->
-					<!-- <field name="price_original"  attrs="{'invisible': [('quotation.is_credit', '=', 'false')]}"/> -->
-					<!-- <field name="discount_price_level_2" attrs="{'invisible': [('use', 'not in', 'tires')]}"/>
-					<field name="discount_price_level_4" attrs="{'invisible': [('use', 'not in', 'tires')]}"/> -->
+					<field name="use" invisible="1" />
+					<field name="product" />
+					<field name="description" />
+					<field name="qty" />
+					<field name="price" />
 				</tree>
 			</field>
 		</record>
 
-
-	<!-- accountquotation.tire -->
+		<!-- accountquotation.tire -->
 		<!-- explicit list view definition -->
 		<record model="ir.ui.view" id="account_quotation_tire_list">
 			<field name="name">account_quotation_tire list</field>
 			<field name="model">accountquotation.tire</field>
 			<field name="arch" type="xml">
 				<tree>
-					<field name="name" string="Folio"/>
-					<field name="partner"/>
-					<field name="date"/>
-					<field name="state"/>
+					<field name="name" string="Folio" />
+					<field name="partner" />
+					<field name="date" />
+					<field name="state" />
 				</tree>
 			</field>
 		</record>
@@ -62,59 +54,52 @@
 			<field name="code">reg_code_account_quotation_set</field>
 		</record>
 		<record id="seq_account_quotation" model="ir.sequence">
-				<field name="name">reg quotation sequence</field>
-				<field name="code">reg_code_account_quotation</field>
-				<field name="prefix">C</field>
-				<field name="padding">2</field>
-				<field name="implementation">no_gap</field>
+			<field name="name">reg quotation sequence</field>
+			<field name="code">reg_code_account_quotation</field>
+			<field name="prefix">C</field>
+			<field name="padding">2</field>
+			<field name="implementation">no_gap</field>
 		</record>
 
-	 <!-- Form -->
-	 <record model="ir.ui.view" id="ticket_relation_form_view">
+		<!-- Form -->
+		<record model="ir.ui.view" id="ticket_relation_form_view">
 			<field name="name">account_quotation_tire form</field>
 			<field name="model">accountquotation.tire</field>
 			<field name="arch" type="xml">
 				<form>
-				 <header>
-										<button name="quotation_confirm" type="object" string="Confirmar" states="draft" class="oe_highlight"/>
-										<button name="quotation_make_invoice" type="object" string="Crear Factura" states="confirm" class="oe_highlight"/>
-										<button name="quotation_cancel" type="object" string="Cancelar" states="confirm" class="oe_highlight"/>
-										<button name="quotation_change_draft" type="object" string="Cambiar a borrador" states="cancel" class="oe_highlight"/>
-
-										<!--     <button name="weight_output" type="object" string="Peso Salida" states="weight_output" class="oe_highlight"/>
-												<button name="fun_transfer" type="object" string="Transfer" class="oe_highlight"
-															groups="truck_reception.group_truck_transfer" attrs="{'invisible': ['|', ('contract_state', 'in', ['except_picking']), '|', ('state', 'not in', ['done']), ('stock_picking_id', '!=', False)]}"/> -->
-												<field name="state" widget="statusbar" readonly="1"  nolabel="1" statusbar_visible="draft,confirm"/>
-										</header>
+					<header>
+						<button name="quotation_confirm" type="object" string="Confirmar" states="draft"
+							class="oe_highlight" />
+						<button name="quotation_make_invoice" type="object" string="Crear Factura" states="confirm"
+							class="oe_highlight" />
+						<button name="quotation_cancel" type="object" string="Cancelar" states="confirm"
+							class="oe_highlight" />
+						<button name="quotation_change_draft" type="object" string="Cambiar a borrador" states="cancel"
+							class="oe_highlight" />
+						<field name="state" widget="statusbar" readonly="1" nolabel="1"
+							statusbar_visible="draft,confirm" />
+					</header>
 					<sheet>
-						 <!-- <div class="oe_title">
-								<h1>
-										<label string="Folio"/>
-										<field name="name" class="oe_inline" readonly="1"/>
-								</h1>
-						 </div> -->
 						<group col="4">
-							<field name="partner" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
-							<field name="date" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
-							<field name="user" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
-							<field name="due_date" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
-							<field name="is_credit" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
-							<field name="invoice_create_id"  readonly="1" string="Factura Relacionada"/>
-							<field name="service_order" readonly="1" string="Orden de servicio"  attrs="{'invisible':[('service_order', '=', False)]}"/>
-							<field name="use" attrs="{'readonly':[('state', 'not in', ['draft'])]}" invisible="1"/>
+							<field name="partner" attrs="{'readonly':[('state', 'not in', ['draft'])]}" />
+							<field name="date" attrs="{'readonly':[('state', 'not in', ['draft'])]}" />
+							<field name="user" attrs="{'readonly':[('state', 'not in', ['draft'])]}" />
+							<field name="due_date" attrs="{'readonly':[('state', 'not in', ['draft'])]}" />
+							<field name="is_credit" attrs="{'readonly':[('state', 'not in', ['draft'])]}" />
+							<field name="invoice_create_id" readonly="1" string="Factura Relacionada" />
+							<field name="service_order" readonly="1" string="Orden de servicio"
+								attrs="{'invisible':[('service_order', '=', False)]}" />
+							<field name="use" attrs="{'readonly':[('state', 'not in', ['draft'])]}" invisible="1" />
 						</group>
-							<notebook>
-									<page string="lineas de cotizacion">
-											<field name="quotation_line" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
-									</page>
-									<!-- <page string="Productos">
-											<field name="products" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
-									</page> -->
-							</notebook>
+						<notebook>
+							<page string="lineas de cotizacion">
+								<field name="quotation_line" attrs="{'readonly':[('state', 'not in', ['draft'])]}" />
+							</page>
+						</notebook>
 					</sheet>
 				</form>
-		</field>
-	</record>
+			</field>
+		</record>
 		<!-- actions opening views on models -->
 		<record model="ir.actions.act_window" id="accountquotation_tire_action_window">
 			<field name="name">Cotizaciones</field>
@@ -124,121 +109,110 @@
 		</record>
 
 
-	<!-- Wizard View -->
-			<record model="ir.ui.view" id="wizard_quotation_view">
+		<!-- Wizard View -->
+		<record model="ir.ui.view" id="wizard_quotation_view">
 			<field name="name">wizard.quotation</field>
 			<field name="model">accountquotation.wizard</field>
 			<field name="arch" type="xml">
 				<form string="Cotizar">
-						<group>
-								<field name="catg_ids" strin="Categoría"/>
-						</group>
+					<group>
+						<field name="catg_ids" strin="Categoría" />
+					</group>
 					<footer>
-						<!-- <button name="button_save" string="Save" type="object" class="oe_highlight"/> -->
-						<button name="check_report" string="Generar" type="object" class="oe_highlight"/>
+						<button name="check_report" string="Generar" type="object" class="oe_highlight" />
 						or
-						<button special="cancel" string="Cancel" class="oe_link" default_focus="0"/>
+						<button special="cancel" string="Cancel" class="oe_link" default_focus="0" />
 					</footer>
 				</form>
 			</field>
 		</record>
 
-	 <!-- wizard  action-->
+		<!-- wizard  action-->
 		<record id="action_open_wizard_quotation" model="ir.actions.act_window">
-				<field name="name">Abrir Cotizador</field>
-				<field name="res_model">accountquotation.wizard</field>
-				<field name="view_type">form</field>
-				<field name="view_mode">form</field>
-				<field name="target">new</field>
+			<field name="name">Abrir Cotizador</field>
+			<field name="res_model">accountquotation.wizard</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
 		</record>
 
 		<!-- menu -->
-		<menuitem name="Herramientas" id="account_parent_tires" parent="account.menu_finance_receivables" sequence="150"/>
+		<menuitem name="Herramientas" id="account_parent_tires" parent="account.menu_finance_receivables"
+			sequence="150" />
 		<!--  -->
 		<menuitem name="Cotizaciones Rapida" id="account_quotation_wizard_menu" parent="account_parent_tires"
-					action="action_open_wizard_quotation" sequence="30"/>
+			action="action_open_wizard_quotation" sequence="30" />
 		<menuitem name="Cotizacion Formal" id="account_quotation_tire_menu" parent="account_parent_tires"
-							action="accountquotation_tire_action_window" sequence="20"/>
+			action="accountquotation_tire_action_window" sequence="20" />
 
 
-	<!-- account invoice -->
-	<record model="ir.ui.view" id="view_account_invoice_taxes_quotation_form">
-	<field name="name">account.invoice.taxes.quotation</field>
-	<field name="model">account.invoice</field>
-	<field name="inherit_id" ref="account.invoice_form"/>
-	<field name="arch" type="xml">
-		<!-- <xpath expr="//button[@name='action_invoice_open']" position="attributes">
-            <attribute name="states">draft,credit</attribute>
-        </xpath> -->
-		<field name="user_id" position="after">
-				<!-- <field name="taxes_compute" string="Impuestos" attrs="{'invisible': [('state', 'not in', 'draft')]}"/> -->
-				<field name="credit_legend"/>
-		</field>
-		<field name="price_unit" position="before">
-				<field name="gain_stock" invisible="1"/>
-		</field>
-		<!-- <button name="action_invoice_open" position="after">
-			<button name="action_invoice_credit" type="object" 
-			attrs="{'invisible': ['|',('credit_legend', '!=', True), ('state', 'not in', 'draft')]}"
-			string="Dar Crédito" class="oe_highlight"/>
-		</button> -->
-		<xpath expr="//button[@name='action_invoice_cancel']" position="attributes">
-            <attribute name="states">draft,open,in_payment,paid,credit</attribute>
-        </xpath>
-	</field>
-	</record>
+		<!-- account invoice -->
+		<record model="ir.ui.view" id="view_account_invoice_taxes_quotation_form">
+			<field name="name">account.invoice.taxes.quotation</field>
+			<field name="model">account.invoice</field>
+			<field name="inherit_id" ref="account.invoice_form" />
+			<field name="arch" type="xml">
+				<field name="user_id" position="after">
+					<field name="credit_legend" />
+				</field>
+				<field name="price_unit" position="before">
+					<field name="gain_stock" invisible="1" />
+				</field>
+				<xpath expr="//button[@name='action_invoice_cancel']" position="attributes">
+					<attribute name="states">draft,open,in_payment,paid,credit</attribute>
+				</xpath>
+			</field>
+		</record>
 
 		<!-- account invoice search -->
-	<record model="ir.ui.view" id="account_invoice_search_day">
-		<field name="name">account.invoice.search.day</field>
-		<field name="model">account.invoice</field>
-		<field name="inherit_id" ref="account.view_account_invoice_filter"/>
-		<field name="arch" type="xml">
-			<filter name="late" position="after">
-					<filter name="today" string="Hoy"
-					domain="[('date_invoice', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),
-									('date_invoice', '&lt;=',datetime.datetime.now().strftime('%Y-%m-%d 23:53:59'))]"/>
-			</filter>
-		</field>
-	</record>
+		<record model="ir.ui.view" id="account_invoice_search_day">
+			<field name="name">account.invoice.search.day</field>
+			<field name="model">account.invoice</field>
+			<field name="inherit_id" ref="account.view_account_invoice_filter" />
+			<field name="arch" type="xml">
+				<filter name="late" position="after">
+					<filter name="today" string="Hoy" domain="[('date_invoice', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),
+									('date_invoice', '&lt;=',datetime.datetime.now().strftime('%Y-%m-%d 23:53:59'))]" />
+				</filter>
+			</field>
+		</record>
 
 		<!-- account payments search -->
-	<record model="ir.ui.view" id="account_payments_search_day">
-		<field name="name">account.payments.search.day</field>
-		<field name="model">account.payment</field>
-		<field name="inherit_id" ref="account.view_account_payment_search"/>
-		<field name="arch" type="xml">
-			<filter name="transfers_filter" position="after">
-					<filter name="today" string="Hoy"
-					domain="[('payment_date', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),
-									('payment_date', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:53:59'))]"/>
-			</filter>
-			<filter name="transfers_filter" position="after">
-				 <group expand="0" string="Group By">
-						<filter string="Fecha de pago" name="Fecha de pago" context="{'group_by':'payment_date'}"/>
-				 </group>
-			</filter>
-		</field>
-	</record>
+		<record model="ir.ui.view" id="account_payments_search_day">
+			<field name="name">account.payments.search.day</field>
+			<field name="model">account.payment</field>
+			<field name="inherit_id" ref="account.view_account_payment_search" />
+			<field name="arch" type="xml">
+				<filter name="transfers_filter" position="after">
+					<filter name="today" string="Hoy" domain="[('payment_date', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),
+									('payment_date', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:53:59'))]" />
+				</filter>
+				<filter name="transfers_filter" position="after">
+					<group expand="0" string="Group By">
+						<filter string="Fecha de pago" name="Fecha de pago" context="{'group_by':'payment_date'}" />
+					</group>
+				</filter>
+			</field>
+		</record>
 
-	<!-- account invoice stock gain tree -->
+		<!-- account invoice stock gain tree -->
 		<record model="ir.ui.view" id="account_stock_gain_list_view">
 			<field name="name">account_stock_gain_tree</field>
 			<field name="model">account.stockgain</field>
 			<field name="arch" type="xml">
 				<tree default_order='date desc'>
-					<field name="invoice_id"/>
-					<field name="date"/>
-					<field name="product_id"/>
-					<field name="qty" sum="qty"/>
-					<field name="cost"/>
-					<field name="price"/>
-					<field name="stock_gain"/>
-					<field name="total_gain" sum="total gain"/>
+					<field name="invoice_id" />
+					<field name="date" />
+					<field name="product_id" />
+					<field name="qty" sum="qty" />
+					<field name="cost" />
+					<field name="price" />
+					<field name="stock_gain" />
+					<field name="total_gain" sum="total gain" />
 				</tree>
 			</field>
 		</record>
-	<!--  account stock form -->
+		<!--  account stock form -->
 		<record model="ir.ui.view" id="account_stock_gain_form_view">
 			<field name="name">account_stock_gain_form</field>
 			<field name="model">account.stockgain</field>
@@ -246,46 +220,92 @@
 				<form>
 					<sheet>
 						<group>
-								<field name="invoice_id"/>
-								<field name="date"/>
-								<field name="product_id"/>
-								<field name="qty"/>
-								<field name="cost"/>
-								<field name="price"/>
-								<field name="stock_gain"/>
-								<field name="total_gain"/>
+							<field name="invoice_id" />
+							<field name="date" />
+							<field name="product_id" />
+							<field name="qty" />
+							<field name="cost" />
+							<field name="price" />
+							<field name="stock_gain" />
+							<field name="total_gain" />
 						</group>
 					</sheet>
 				</form>
-		</field>
-	</record>
-	<!-- actions opening views on models -->
-	<record model="ir.actions.act_window" id="stock_gain_action_window">
-		<field name="name">Ganancias de stock</field>
-		<field name="res_model">account.stockgain</field>
-		<field name="view_type">form</field>
-		<field name="view_mode">tree,form</field>
-	</record>
-	<!-- menu account stock gain -->
-	<menuitem name="Ganancias de stock" id="account_stock_gain_menu" parent="account.menu_finance_receivables"
-							action="stock_gain_action_window" sequence="100 "/>
-	<!-- search views stock gain -->
+			</field>
+		</record>
+		<!-- actions opening views on models -->
+		<record model="ir.actions.act_window" id="stock_gain_action_window">
+			<field name="name">Ganancias de stock</field>
+			<field name="res_model">account.stockgain</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		<!-- menu account stock gain -->
+		<menuitem name="Ganancias de stock" id="account_stock_gain_menu" parent="account.menu_finance_receivables"
+			action="stock_gain_action_window" sequence="100 " />
+		<!-- search views stock gain -->
 		<record model="ir.ui.view" id="account_stock_gain_search_view">
-						<field name="name">account.stockgain.search</field>
-						<field name="model">account.stockgain</field>
-						<field name="arch" type="xml">
-								<search>
-										<filter name="today" string="Hoy"
-											domain="[('date', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),
-															('date', '&lt;=',datetime.datetime.now().strftime('%Y-%m-%d 23:53:59'))]"/>
-										<separator/>
-										<group string="Group By">
-													<filter string="Fecha" name="Fecha" context="{'group_by':'date'}"/>
-													<filter string="Factura" name="Factura" context="{'group_by':'invoice_id'}"/>
-										</group>
-								</search>
-						</field>
-				</record>
-	<!--  -->
+			<field name="name">account.stockgain.search</field>
+			<field name="model">account.stockgain</field>
+			<field name="arch" type="xml">
+				<search>
+					<filter name="today" string="Hoy" domain="[('date', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),
+															('date', '&lt;=',datetime.datetime.now().strftime('%Y-%m-%d 23:53:59'))]" />
+					<separator />
+					<group string="Group By">
+						<filter string="Fecha" name="Fecha" context="{'group_by':'date'}" />
+						<filter string="Factura" name="Factura" context="{'group_by':'invoice_id'}" />
+					</group>
+				</search>
+			</field>
+		</record>
+		<!--  -->
+		<!-- Account financing Form -->
+		<record model="ir.ui.view" id="account_financing_form_view">
+			<field name="name">account_financing form</field>
+			<field name="model">account.financing</field>
+			<field name="arch" type="xml">
+				<form>
+					<sheet>
+						<group>
+							<field name="bank_name"/>
+							<field name="mont_3"/>
+							<field name="mont_6"/>
+							<field name="mont_12"/>
+							<field name="mont_18"/>
+							<field name="active"/>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<!-- Account financing Tree -->
+		<record model="ir.ui.view" id="account_financing_list">
+			<field name="name">account_financing list</field>
+			<field name="model">account.financing</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="bank_name"/>
+					<field name="mont_3"/>
+					<field name="mont_6"/>
+					<field name="mont_12"/>
+					<field name="mont_18"/>
+				</tree>
+			</field>
+		</record>
+
+		<!-- Account Financing Action-->
+		<record model="ir.actions.act_window" id="account_financing_action_window">
+			<field name="name">Financiamiento</field>
+			<field name="res_model">account.financing</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<!-- Account Financing menu-->
+		<menuitem name="Financiamiento" id="account_financing_menu" parent="account.menu_finance_receivables"
+			action="account_financing_action_window" sequence="105" />
+
 	</data>
 </odoo>

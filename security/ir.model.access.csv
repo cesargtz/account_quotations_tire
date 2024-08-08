@@ -4,3 +4,4 @@ access_accountquotation_tire,name_accountquotation_tire,model_accountquotation_t
 access_account_stockgain,name_account_stockgain,model_account_stockgain,,1,1,1,1
 access_service_order_line,name_service_order_line,model_service_order_line,,1,1,1,1
 access_service_order,name_service_order,model_service_order,,1,1,1,1
+access_account_financing,name_account_financing,model_account_financing,,1,1,1,1

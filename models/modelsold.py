@@ -204,45 +204,44 @@ class AccountQuotationInvoice(models.Model):
 	@api.multi
 	def action_invoice_open(self):
 		res = super(AccountQuotationInvoice,self).action_invoice_open()
-		if self.type:
-			if self.type in ('out_invoice'):
-				for line in self.invoice_line_ids:
-					if line.product_id.type == 'consu':
-						print(line.product_id.qty_enable)
-						print(line.quantity)
-						if line.product_id.qty_enable >= line.quantity:
-							if line.product_id.standard_price > 0:
-								self.gain_stock = (line.price_total / line.quantity) - line.product_id.standard_price
-							else:
-								raise exceptions.ValidationError("Configure el costo del producto: %s " % (line.product_id.name))
+		if self.type in ('out_invoice'):
+			for line in self.invoice_line_ids:
+				if line.product_id.type == 'consu':
+					print(line.product_id.qty_enable)
+					print(line.quantity)
+					if line.product_id.qty_enable >= line.quantity:
+						if line.product_id.standard_price > 0:
+							self.gain_stock = (line.price_total / line.quantity) - line.product_id.standard_price
+						else:
+							raise exceptions.ValidationError("Configure el costo del producto: %s " % (line.product_id.name))
 
-						else:
-							if line.product_id.type == 'consu':
-								raise exceptions.ValidationError("Producto sin stock: %s " % (line.product_id.name))
-			if self.type in ('out_invoice','in_refund'): #si son ventas o devoluciones de comptra
-				for line in self.invoice_line_ids:
-					if line.product_id.type == 'consu':
-						if line.product_id.qty_enable >= line.quantity:
-							line.product_id.write({'qty_enable': ( line.product_id.qty_enable - line.quantity)})
-							self.env['account.stockgain'].create({
-								'invoice_id': self.id,
-								'date': self.date_invoice,
-								'product_id': line.product_id.id,
-								'qty': line.quantity,
-								'cost': line.product_id.standard_price,
-								'price': line.price_total / line.quantity,
-								'stock_gain': line.gain_stock,
-								'total_gain':line.quantity * line.gain_stock
-							})
-						else:
+					else:
+						if line.product_id.type == 'consu':
 							raise exceptions.ValidationError("Producto sin stock: %s " % (line.product_id.name))
-			if self.type in ('in_invoice', 'out_refund'): # si son compras o dev de ventas.
-				for line in self.invoice_line_ids:
-					if line.product_id.type == 'consu':
-						if self.type == 'in_invoice':
-							if line.product_id.qty_enable == 0:
-								line.product_id.write({'standard_price': ( line.price_total / line.quantity)})
-						line.product_id.write({'qty_enable': ( line.product_id.qty_enable + line.quantity)})
+		if self.type in ('out_invoice','in_refund'): #si son ventas o devoluciones de comptra
+			for line in self.invoice_line_ids:
+				if line.product_id.type == 'consu':
+					if line.product_id.qty_enable >= line.quantity:
+						line.product_id.write({'qty_enable': ( line.product_id.qty_enable - line.quantity)})
+						self.env['account.stockgain'].create({
+							'invoice_id': self.id,
+							'date': self.date_invoice,
+							'product_id': line.product_id.id,
+							'qty': line.quantity,
+							'cost': line.product_id.standard_price,
+							'price': line.price_total / line.quantity,
+							'stock_gain': line.gain_stock,
+							'total_gain':line.quantity * line.gain_stock
+						})
+					else:
+						raise exceptions.ValidationError("Producto sin stock: %s " % (line.product_id.name))
+		if self.type in ('in_invoice', 'out_refund'): # si son compras o dev de ventas.
+			for line in self.invoice_line_ids:
+				if line.product_id.type == 'consu':
+					if self.type == 'in_invoice':
+						if line.product_id.qty_enable == 0:
+							line.product_id.write({'standard_price': ( line.price_total / line.quantity)})
+					line.product_id.write({'qty_enable': ( line.product_id.qty_enable + line.quantity)})
 		return res
 
 	@api.multi
@@ -363,7 +362,7 @@ class AccountBankFinancing(models.Model):
 	_name = 'account.financing'
 
 	bank_name = fields.Char("Banco")
-
+	
 	mont_3 = fields.Float(string='3 meses')
 	mont_6 = fields.Float(string='6 meses')
 	mont_12 = fields.Float(string='12 meses')
